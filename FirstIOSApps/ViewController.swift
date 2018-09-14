@@ -10,16 +10,29 @@ import UIKit
 
 class ViewController: UIViewController {
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+    @IBOutlet weak var loginTextField: UITextField!
+    @IBOutlet weak var passwordTextField: UITextField!
+    @IBOutlet weak var returnedLabel: UILabel!
+    
+    @IBAction func sendPressed(button: UIButton){
+        performSegue(withIdentifier: "detailSegue", sender: nil)
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    
+    @IBAction func uwindToMainScreen(segue: UIStoryboardSegue) {
+        guard segue.identifier == "uwindSegue" else {return}
+        guard let svc = segue.source as? SecondViewController else {return}
+        
+        returnedLabel.text = svc.label.text
     }
-
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        guard let dvc = segue.destination as? SecondViewController else { return }
+        dvc.login = loginTextField.text
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true)
+    }
 
 }
 
